@@ -42,6 +42,15 @@ How to compile and install nano
     to your home directory, rename it to ".nanorc", and then edit it
     according to your taste.
 
+Installing nano on Ubuntu and Debian based Operating Systems- 
+Open Terminal: ( Alt + Ctrl + T )
+
+        sudo apt install nano
+
+Installing nano on CentOS and Fedora - 
+      
+        sudo yum install nano
+
 Web Page
 
     https://nano-editor.org/
