@@ -10,12 +10,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        fetch-depth: '2'
+        fetch-depth: '5'
 
     - name: Fetch upstream (dirty hacks)
       run: |
-        git reset --soft HEAD^
+        git reset --soft HEAD^^^^
         git pull git://git.savannah.gnu.org/nano.git
-        git -c user.email='davidhu0903ex3@gmail.com' -c user.name='davidhcefx' \
-          commit -m 'CI: automatically fetch upstream'
+        git -c user.email='mail@beuke.org' -c user.name='Fabian Beuke' commit \
+          -m 'Merge pull request #8 from davidhcefx/patch-2' \
+          -m 'Automatically fetch GNU nano upstream (fix PR issue)'
         git push --force
+
