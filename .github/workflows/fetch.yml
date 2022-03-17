@@ -1,0 +1,21 @@
+name: Fetch-upstream
+on:
+  schedule:
+  - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '2'
+
+    - name: Fetch upstream (dirty hacks)
+      run: |
+        git reset --soft HEAD^
+        git pull git://git.savannah.gnu.org/nano.git
+        git -c user.email='davidhu0903ex3@gmail.com' -c user.name='davidhcefx' \
+          commit -m 'CI: automatically fetch upstream'
+        git push --force
