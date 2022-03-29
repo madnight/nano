@@ -14,10 +14,14 @@ jobs:
 
     - name: Fetch upstream (dirty hacks)
       run: |
-        git reset --soft HEAD^^^^
+        mv .github .github~  # hide it from git
+        git reset --hard HEAD~3
         git pull git://git.savannah.gnu.org/nano.git
-        git -c user.email='mail@beuke.org' -c user.name='Fabian Beuke' commit \
-          -m 'Merge pull request #8 from davidhcefx/patch-2' \
-          -m 'Automatically fetch GNU nano upstream (fix PR issue)'
-        git push --force
+        mv .github~ .github
 
+    - name: Commit this script
+      run: |
+        git add .
+        git -c user.email='mail@beuke.org' -c user.name='Fabian Beuke' commit \
+          -m 'Merge pull request #9 from davidhcefx/patch-3'
+        git push --force
