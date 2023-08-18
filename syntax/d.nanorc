@@ -1,0 +1,49 @@
+## D programming Language
+syntax "D" "\.d$"
+magic "^(D) (source|program)"
+comment "//"
+color green "\<(cast|void|bool|byte|ubyte|enum|short|ushort|interface|int|uint|long|ulong|float|double|real|char|wchar|dchar|struct|union|class|function|delegate|template|immutable)\>"
+color green "\<(for|if|while|do|else|case|default|switch|foreach|foreach_reverse|with)\>"
+color green "\<(try|throw|catch|scope|finally)\>"
+color green "\<(align|asm|assert|auto|const|export|null|shared|typeid|typeof|final)\>"
+color brightmagenta "\<(goto|continue|break|return)\>"
+color brightcyan "\<(import|pragma|version|mixin|module|macro)\>"
+color brightmagenta "'([^'\]|(\\["'abfnrtv\\]))'"
+
+## numbers
+color brightwhite "0?(b|B)[01_]+" "octal![0-7]+" "0?(x|X)[0-9A-Fa-f_]+"
+color normal "octal"
+
+## accessors and other class/struct keywords
+color blue "\<(abstract|override|package|private|protected|public|super|static|this|new)\>"
+
+## function traits and other function related keywords
+color green "\<(in|out|inout|ref|nothrow|pure|lazy)\>"
+
+## deprecated
+color brightwhite "deprecated"
+
+#Operator Color
+color yellow "[.:;,+*|=!\%]" "<" ">" "/" "-" "&" "~" "\?"
+
+#Parenthetical Color
+color magenta "[(){}]" "\[" "\]"
+
+## String highlighting.  You will in general want your comments and
+## strings to come last, because syntax highlighting rules will be
+## applied in the order they are read in.
+color cyan ""(\\.|[^"])*"" "`(\\.|[^"])*`"
+
+## printf-family format specifiers
+color yellow "%(\#|(0-+))?(s|c|d|u|b|o|x|X|e|E|f|F|g|G|a|A|r)"
+
+## escape sequences
+color brightyellow "\\(\#|(0-+))?('|\"|\?|\\|0|a|b|f|n|r|t|v|x|u|U)"
+
+## Comment highlighting
+color brightblue "//.*"
+color brightblue start="/\*" end="\*/"
+color brightgreen start="/\+" end="\+/"
+
+## Trailing whitespace
+color ,green "[[:space:]]+$"
