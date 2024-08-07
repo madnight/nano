@@ -43,7 +43,7 @@ msgstr "Suche umbrechen"
 
 #: src/browser.c:281 src/search.c:437
 msgid "This is the only occurrence"
-msgstr "Das ist das einzige Auftreten"
+msgstr "Das ist das einzige Ergebnis"
 
 #. TRANSLATORS: This is the main search prompt.
 #: src/browser.c:314 src/search.c:100
