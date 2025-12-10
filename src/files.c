@@ -208,7 +208,7 @@ bool write_lockfile(const char *lockfilename, const char *filename, bool modifie
 	lockdata[0] = 0x62;
 	lockdata[1] = 0x30;
 	/* It's fine to overwrite byte 12 with the \0 as it is 0x00 anyway. */
-	snprintf(&lockdata[2], 11, "nano %s", VERSION);
+	snprintf(&lockdata[2], 11, "Milli %s", VERSION);
 	lockdata[24] = mypid % 256;
 	lockdata[25] = (mypid / 256) % 256;
 	lockdata[26] = (mypid / (256 * 256)) % 256;
@@ -1480,8 +1480,8 @@ char *safe_tempfile(FILE **stream)
 	if (!extension || strchr(extension, '/'))
 		extension = openfile->filename + strlen(openfile->filename);
 
-	tempfile_name = nrealloc(tempdir, strlen(tempdir) + 12 + strlen(extension));
-	strcat(tempfile_name, "nano.XXXXXX");
+	tempfile_name = nrealloc(tempdir, strlen(tempdir) + 13 + strlen(extension));
+	strcat(tempfile_name, "milli.XXXXXX");
 	strcat(tempfile_name, extension);
 
 	descriptor = mkstemps(tempfile_name, strlen(extension));

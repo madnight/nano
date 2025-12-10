@@ -3609,7 +3609,7 @@ void do_credits(void)
 	int crpos = 0, xlpos = 0;
 
 	const char *credits[CREDIT_LEN] = {
-		NULL,                /* "The nano text editor" */
+		NULL,                /* "The Milli text editor" */
 		NULL,                /* "version" */
 		VERSION,
 		"",
@@ -3653,7 +3653,7 @@ void do_credits(void)
 		NULL,                /* "and anyone else we forgot..." */
 		"",
 		"",
-		NULL,                /* "Thank you for using nano!" */
+		NULL,                /* "Thank you for using Milli!" */
 		"",
 		"",
 		"(C) 2025",
@@ -3664,7 +3664,7 @@ void do_credits(void)
 	};
 
 	const char *xlcredits[XLCREDIT_LEN] = {
-		N_("The nano text editor"),
+		N_("The Milli text editor"),
 		N_("version"),
 		N_("Brought to you by:"),
 		N_("Special thanks to:"),
@@ -3672,7 +3672,7 @@ void do_credits(void)
 		N_("the many translators and the TP"),
 		N_("For ncurses:"),
 		N_("and anyone else we forgot..."),
-		N_("Thank you for using nano!")
+		N_("Thank you for using Milli!")
 	};
 
 	if (with_interface || with_help) {

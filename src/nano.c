@@ -321,7 +321,7 @@ void do_exit(void)
 		statusbar(_("Cancelled"));
 }
 
-/* Save the current buffer under the given name (or "nano.<pid>" when nameless)
+/* Save the current buffer under the given name (or "milli.<pid>" when nameless)
  * with suffix ".save".  If needed, the name is further suffixed to be unique. */
 void emergency_save(const char *filename)
 {
@@ -329,7 +329,7 @@ void emergency_save(const char *filename)
 
 	if (*filename == '\0') {
 		plainname = nmalloc(28);
-		sprintf(plainname, "nano.%u", getpid());
+		sprintf(plainname, "milli.%u", getpid());
 	} else
 		plainname = copy_of(filename);
 
@@ -592,7 +592,7 @@ void usage(void)
 #endif
 #ifdef ENABLE_NANORC
 	print_opt(_("-f <file>"), _("--rcfile=<file>"),
-					N_("Use only this file for configuring nano"));
+					N_("Use only this file for configuring Milli"));
 #endif
 #if defined(ENABLE_BROWSER) || defined(ENABLE_HELP)
 	print_opt("-g", "--showcursor", N_("Show cursor in file browser & help text"));
@@ -661,9 +661,9 @@ void usage(void)
 void version(void)
 {
 #ifdef REVISION
-	printf(" GNU nano from git, %s\n", REVISION);
+	printf(" Milli (based on GNU nano) from git, %s\n", REVISION);
 #else
-	printf(_(" GNU nano, version %s\n"), VERSION);
+	printf(_(" Milli (based on GNU nano), version %s\n"), VERSION);
 #endif
 #ifndef NANO_TINY
 	/* TRANSLATORS: The %s is the year of the latest release. */
@@ -2657,7 +2657,7 @@ int main(int argc, char **argv)
 #ifdef ENABLE_HELP
 	if (*openfile->filename == '\0' && openfile->totsize == 0 &&
 				openfile->next == openfile && !ISSET(NO_HELP) && NOTREBOUND)
-		statusbar(_("Welcome to nano.  For basic help, type Ctrl+G."));
+		statusbar(_("Welcome to Milli.  For basic help, type Ctrl+G."));
 #endif
 
 #ifdef ENABLE_LINENUMBERS

@@ -85,7 +85,7 @@ void help_init(void)
 		htx[0] = N_("Insert File Help Text\n\n "
 				"Type in the name of a file to be inserted into the "
 				"current file buffer at the current cursor "
-				"location.\n\n If you have compiled nano with multiple "
+				"location.\n\n If you have compiled Milli (based on GNU nano) with multiple "
 				"file buffer support, and enable multiple file buffers "
 				"with the -F or --multibuffer command line flags, the "
 				"Meta-F toggle, or a nanorc file, inserting a file "
@@ -189,8 +189,8 @@ void help_init(void)
 #endif /* !NANO_TINY */
 	else {
 		/* Default to the main help list. */
-		htx[0] = N_("Main nano help text\n\n "
-				"The nano editor is designed to emulate the "
+		htx[0] = N_("Main Milli help text\n\n "
+				"The Milli editor is designed to emulate the "
 				"functionality and ease-of-use of the UW Pico text "
 				"editor.  There are four main sections of the editor.  "
 				"The top line shows the program version, the current "

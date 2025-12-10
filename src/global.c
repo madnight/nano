@@ -571,7 +571,7 @@ void shortcut_init(void)
 	 * they are best kept shorter than 56 characters, but may be longer. */
 	const char *cancel_gist = N_("Cancel the current function");
 	const char *help_gist = N_("Display this help text");
-	const char *exit_gist = N_("Close the current buffer / Exit from nano");
+	const char *exit_gist = N_("Close the current buffer / Exit from Milli");
 	const char *writeout_gist =
 		N_("Write the current buffer (or the marked region) to disk");
 	const char *readfile_gist =
