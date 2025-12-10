@@ -297,7 +297,6 @@ char *get_next_filename(const char *name, const char *suffix);
 void do_insertfile(void);
 #ifndef NANO_TINY
 void do_execute(void);
-#endif
 void do_ai_replace_selection(void);
 void do_ai_insert_at_cursor(void);
 #endif
