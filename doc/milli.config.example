@@ -4,8 +4,8 @@
 # Both LM Studio and OpenAI Cloud use the OpenAI-compatible REST shape.
 
 [ai]
-# Base URL including port, ending with /v1 for OpenAI-compatible APIs.
-base_url = http://127.0.0.1:1234/v1
+# Base URL including port; do NOT include /v1 (endpoints add it).
+base_url = http://127.0.0.1:1234
 
 # Endpoint paths. Leave as defaults unless your proxy differs.
 responses_endpoint = /v1/responses

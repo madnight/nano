@@ -117,7 +117,7 @@ AI configuration
     Studio) for AI-assisted actions (Alt+1/Alt+2).  Copy
     doc/milli.config.example to ~/.milli.config and adjust:
 
-        base_url = http://127.0.0.1:1234/v1
+        base_url = http://127.0.0.1:1234        # don’t include /v1
         responses_endpoint = /v1/responses
         models_endpoint = /v1/models
         model = google/gemma-3-1b
