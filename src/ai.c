@@ -225,7 +225,7 @@ static char *build_payload(const char *prompt, const char *selection)
 
 static bool write_payload_to_file(const char *payload, char **path_out)
 {
-	char template[] = "/tmp/milli-ai-XXXXXX.json";
+	char template[] = "/tmp/milli-ai-XXXXXX";
 	int fd = mkstemp(template);
 	size_t total = 0, len = strlen(payload);
 
