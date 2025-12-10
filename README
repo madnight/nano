@@ -1,139 +1,66 @@
+# Milli: AI-Enabled nano
 
-          Milli -- an AI-enabled nano, inspired by Pico
+Milli is a terminal text editor built on GNU nano, with the same Pico-like feel plus AI assists (Alt+1/Alt+2), syntax highlighting, undo/redo, multiple buffers, softwrap, regex search/replace, and more. It is still nano at heart—licensed under GPLv3+, with documentation under the GFDL 1.2+ (two busybox functions remain BSD-licensed).
 
-Purpose
+## Appearance
 
-    Milli is a small and simple text editor for use on the terminal,
-    built on GNU nano but enhanced by AI-assisted conveniences.  It
-    keeps the familiar interface and key bindings of the Pico editor
-    while bundling missing features: undo/redo, syntax highlighting,
-    line numbers, softwrapping, multiple buffers, selecting text by
-    holding Shift, search-and-replace with regular expressions, and
-    several other conveniences.  In short, Milli is nano with AI
-    enabled.
+```
+ ____________________________________________________________________
+|  Milli 8.7                     filename                  Modified  |
+ --------------------------------------------------------------------
+| Text window shows the current buffer.                             |
+| Title bar shows version/name/state; status line shows feedback.   |
+| Two bottom rows list shortcuts (^=Ctrl, M-=Alt/Meta).              |
+ --------------------------------------------------------------------
+| [ Some status message ]                                           |
+|^G Help   ^O Write Out  ^F Where Is   ^K Cut     ^T Execute         |
+|^X Exit   ^R Read File  ^\ Replace    ^U Paste   M-1 AI Replace     |
+|                                  M-2 AI Insert   ^J Justify        |
+ --------------------------------------------------------------------
+```
 
-Appearance
+## Quick start
 
-    In rough ASCII graphics, this is what nano's screen looks like:
+### From a release tarball
+```sh
+tar -xvf milli-x.y.tar.gz
+cd milli-x.y
+./configure
+make
+sudo make install    # or use --prefix=... with ./configure
+```
 
-   ____________________________________________________________________
-  |  Milli 8.7                     filename                  Modified  |
-   --------------------------------------------------------------------
-  | This is the text window, displaying the contents of a 'buffer',    |
-  | the contents of the file you are editing.                          |
-  |                                                                    |
-  | The top row of the screen is the 'title bar'; it shows Milli's     |
-  | version, the name of the file, and whether you modified it.        |
-  | The two bottom rows display the most important shortcuts; in       |
-  | those lines ^ means Ctrl.  The third row from the bottom shows     |
-  | some feedback message, or gets replaced with a prompt bar when     |
-  | you tell Milli to do something that requires extra input.          |
-  |                                                                    |
-   --------------------------------------------------------------------
-  |                       [ Some status message ]                      |
-  |^G Help       ^O Write Out  ^F Where Is   ^K Cut        ^T Execute  |
-  |^X Exit       ^R Read File  ^\ Replace    ^U Paste      ^J Justify  |
-   --------------------------------------------------------------------
+### From git (requires autotools)
+```sh
+git clone https://github.com/manimohans/milli.git
+cd milli
+./autogen.sh
+./configure --enable-debug
+make
+sudo make install
+```
 
-Origin
+Build deps: ncurses headers (`libncurses-dev` on Debian/Ubuntu, `ncurses-devel` on Fedora/RHEL), gettext, autoconf, automake, pkg-config, make, gcc/clang. Use `--prefix` to install elsewhere (e.g., `./configure --prefix=$HOME/.local && make && make install`) and ensure the chosen bin dir is on `PATH`. Sample syntax/options live in `doc/sample.nanorc` (copy to `~/.nanorc`).
 
-    Milli is a downstream of GNU nano.  The nano project was started in
-    1999 to provide a truly free editor with Pico-like usability.  Nano
-    solved licensing and functionality gaps (GPL licensing, go-to-line,
-    search-and-replace without flags) and became an official GNU
-    package.  Milli keeps that foundation and layers AI-driven assists
-    while retaining sensible defaults (linewise scrolling, no automatic
-    line breaking).
+## AI configuration (OpenAI-compatible endpoints)
 
-License
+Milli reads `~/.milli.config` at startup. Copy `doc/milli.config.example` and adjust:
+```
+base_url = http://127.0.0.1:1234        # no /v1 here
+responses_endpoint = /v1/responses
+models_endpoint = /v1/models
+model = google/gemma-3-1b
+api_key = lm-studio   # use a real key for OpenAI Cloud
+temperature = 0.2
+timeout_ms = 60000
+```
+- Alt+1 (AI Replace): select text, press Alt+1, enter a prompt; selection is replaced.
+- Alt+2 (AI Insert): press Alt+2, enter a prompt; text inserts at the cursor.
+- LM Studio accepts any bearer token; OpenAI Cloud requires a valid key.
 
-    Milli's code and documentation remain covered by the GPL version 3
-    or (at your option) any later version, except for two functions that
-    were copied from busybox which are under a BSD license.  The
-    documentation is additionally covered by the GNU Free Documentation
-    License version 1.2 or (at your option) any later version.  See the
-    files COPYING and COPYING.DOC for the full text of these licenses.
+## Upstream, license, and support
 
-    When in any file of this package a copyright notice mentions a
-    year range (such as 1999-2011), it is a shorthand for a list of
-    all the years in that interval.
-
-How to compile and install Milli
-
-    From a release tarball:
-
-        tar -xvf milli-x.y.tar.gz
-        cd milli-x.y
-        ./configure
-        make
-        sudo make install      # or use --prefix=... with ./configure
-
-    From git (requires autotools):
-
-        git clone https://github.com/manimohans/milli.git
-        cd milli
-        ./autogen.sh
-        ./configure --enable-debug
-        make
-        sudo make install
-
-    Build dependencies:
-        - ncurses headers (`libncurses-dev` on Debian/Ubuntu, `ncurses-devel` on Fedora/RHEL)
-        - gettext, autoconf, automake, pkg-config, make, gcc (or clang)
-
-    Use --prefix with ./configure to install somewhere else (e.g.,
-    ./configure --prefix=$HOME/.local && make && make install).  Ensure
-    your chosen bin directory is on PATH.  Sample nanorc lives in
-    doc/sample.nanorc; copy it to ~/.nanorc to customize syntax and
-    options.
-
-Web Page
-
-    https://nano-editor.org/ (upstream GNU nano)
-
-Mailing Lists
-
-    Milli inherits upstream channels for now:
-
-    * <info-nano@gnu.org> is a very low traffic list used to announce
-      new GNU nano versions or other important info about the project.
-
-    * <help-nano@gnu.org> is for those seeking to get help without
-      wanting to hear about the technical details of its development.
-
-    * <nano-devel@gnu.org> is the list used by the people that make nano
-      and a general development discussion list, with moderate traffic.
-
-    To subscribe, send email to <name>-request@gnu.org with a subject
-    of "subscribe", where <name> is the list you want to subscribe to.
-
-    The archives of the development and help mailing lists are here:
-
-        https://lists.gnu.org/archive/html/nano-devel/
-        https://lists.gnu.org/archive/html/help-nano/
-
-Bug Reports
-
-    If you find a bug, please file a detailed description of the problem
-    on nano's issue tracker: https://savannah.gnu.org/bugs/?group=nano
-    (you will need an account to be able to do so), or send an email
-    to the nano-devel list (no need to subscribe, but mention it if
-    you want to be CC'ed on an answer).  Please include "Milli" in the
-    subject so maintainers can triage downstream reports.
-
-AI configuration
-
-    Milli can talk to OpenAI-compatible endpoints (OpenAI Cloud or LM
-    Studio) for AI-assisted actions (Alt+1/Alt+2).  Copy
-    doc/milli.config.example to ~/.milli.config and adjust:
-
-        base_url = http://127.0.0.1:1234        # don’t include /v1
-        responses_endpoint = /v1/responses
-        models_endpoint = /v1/models
-        model = google/gemma-3-1b
-        api_key = lm-studio   # use a real key for OpenAI Cloud
-        temperature = 0.2
-        timeout_ms = 60000
-
-    Milli reads this file from your HOME directory at startup.  LM
-    Studio accepts any bearer token; OpenAI Cloud requires a valid key.
+- Upstream project: https://nano-editor.org/ (Milli is a downstream of GNU nano).
+- Mailing lists (upstream): info-nano@gnu.org, help-nano@gnu.org, nano-devel@gnu.org.
+- Bugs: include “Milli” when filing at https://savannah.gnu.org/bugs/?group=nano or emailing nano-devel.
+- Licensing: GPLv3+ for code (except two BSD-licensed busybox functions); documentation under GFDL 1.2+. See `COPYING` and `COPYING.DOC`.
