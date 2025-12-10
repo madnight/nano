@@ -298,6 +298,9 @@ void do_insertfile(void);
 #ifndef NANO_TINY
 void do_execute(void);
 #endif
+void do_ai_replace_selection(void);
+void do_ai_insert_at_cursor(void);
+#endif
 char *get_full_path(const char *origpath);
 char *safe_tempfile(FILE **stream);
 #ifdef ENABLE_OPERATINGDIR

@@ -53,6 +53,21 @@ void do_mark(void)
 }
 #endif
 
+/* Placeholder: prompt-driven AI replacement of selected text. */
+void do_ai_replace_selection(void)
+{
+	if (openfile->mark == NULL)
+		statusbar(AHEM, _("Set a selection first, then use M-1 for AI replace"));
+	else
+		statusbar(REMARK, _("AI replace (Alt+1) not wired yet"));
+}
+
+/* Placeholder: prompt-driven AI insertion at the cursor. */
+void do_ai_insert_at_cursor(void)
+{
+	statusbar(REMARK, _("AI insert (Alt+2) not wired yet"));
+}
+
 /* Insert a tab.  Or, if --tabstospaces is in effect, insert the number
  * of spaces that a tab would normally take up at this position. */
 void do_tab(void)

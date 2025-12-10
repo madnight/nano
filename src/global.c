@@ -601,6 +601,8 @@ void shortcut_init(void)
 	const char *undo_gist = N_("Undo the last operation");
 	const char *redo_gist = N_("Redo the last undone operation");
 #endif
+	const char *ai_replace_gist = N_("Generate text to replace selection (Alt+1)");
+	const char *ai_insert_gist = N_("Generate text at cursor (Alt+2)");
 	const char *back_gist = N_("Go back one character");
 	const char *forward_gist = N_("Go forward one character");
 	const char *prevword_gist = N_("Go back one word");
@@ -800,6 +802,13 @@ void shortcut_init(void)
 
 	add_to_funcs(do_replace, MMAIN,
 			N_("Replace"), WHENHELP(replace_gist), TOGETHER);
+
+#ifndef NANO_TINY
+	add_to_funcs(do_ai_replace_selection, MMAIN,
+			N_("AI Replace"), WHENHELP(ai_replace_gist), TOGETHER);
+	add_to_funcs(do_ai_insert_at_cursor, MMAIN,
+			N_("AI Insert"), WHENHELP(ai_insert_gist), TOGETHER);
+#endif
 
 #ifdef NANO_TINY
 	add_to_funcs(do_search_backward, MHELP,
@@ -1287,6 +1296,8 @@ void shortcut_init(void)
 	add_to_sclist(MMOST, "M-^", 0, copy_text, 0);
 	add_to_sclist(MMOST, "^U", 0, paste_text, 0);
 	add_to_sclist(MMAIN, ISSET(MODERN_BINDINGS) ? "^E" : "^T", 0, do_execute, 0);
+	add_to_sclist(MMAIN, "M-1", 0, do_ai_replace_selection, 0);
+	add_to_sclist(MMAIN, "M-2", 0, do_ai_insert_at_cursor, 0);
 #ifdef ENABLE_SPELLER
 	if (!ISSET(PRESERVE))
 		add_to_sclist(MEXECUTE, "^S", 0, do_spell, 0);
