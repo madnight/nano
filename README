@@ -19,18 +19,8 @@ Milli is a terminal text editor built on GNU nano, with the same Pico-like feel 
  --------------------------------------------------------------------
 ```
 
-## Quick start
-
-### From a release tarball
-```sh
-tar -xvf milli-x.y.tar.gz
-cd milli-x.y
-./configure
-make
-sudo make install    # or use --prefix=... with ./configure
-```
-
-### From git (requires autotools)
+## Quick start (build from git)
+No release tarballs yet; build from the repo:
 ```sh
 git clone https://github.com/manimohans/milli.git
 cd milli
