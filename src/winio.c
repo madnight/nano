@@ -32,9 +32,9 @@
 #endif
 
 #ifdef REVISION
-#define BRANDING  REVISION
+#define BRANDING  "Milli " REVISION
 #else
-#define BRANDING  PACKAGE_STRING
+#define BRANDING  "Milli " VERSION
 #endif
 
 /* When having an older ncurses, then most likely libvte is older too. */
