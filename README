@@ -60,22 +60,32 @@ License
 
 How to compile and install Milli
 
-    Download the latest Milli source tarball, and then:
+    From a release tarball:
 
         tar -xvf milli-x.y.tar.gz
         cd milli-x.y
         ./configure
         make
-        make install
+        sudo make install      # or use --prefix=... with ./configure
 
-    You will need the header files of ncurses installed for ./configure
-    to succeed -- get them from libncurses-dev (Debian) or ncurses-devel
-    (Fedora) or a similarly named package.  Use --prefix with ./configure
-    to override the default installation directory of /usr/local.
+    From git (requires autotools):
 
-    After installation you may want to copy the doc/sample.nanorc file
-    to your home directory, rename it to ".nanorc", and then edit it
-    according to your taste.
+        git clone https://github.com/your-org/milli.git
+        cd milli
+        ./autogen.sh
+        ./configure --enable-debug
+        make
+        sudo make install
+
+    Build dependencies:
+        - ncurses headers (`libncurses-dev` on Debian/Ubuntu, `ncurses-devel` on Fedora/RHEL)
+        - gettext, autoconf, automake, pkg-config, make, gcc (or clang)
+
+    Use --prefix with ./configure to install somewhere else (e.g.,
+    ./configure --prefix=$HOME/.local && make && make install).  Ensure
+    your chosen bin directory is on PATH.  Sample nanorc lives in
+    doc/sample.nanorc; copy it to ~/.nanorc to customize syntax and
+    options.
 
 Web Page
 
