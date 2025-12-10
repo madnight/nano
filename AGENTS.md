@@ -10,7 +10,7 @@
 
 ## Build, Test, and Development Commands
 - First-time from git: `./autogen.sh && ./configure --enable-debug` (generates `configure`, enables debug symbols).
-- Standard build: `make` (produces `src/nano`, the Milli binary; rerun after code changes).
+- Standard build: `make` (produces `src/milli`, the Milli binary; rerun after code changes).
 - Install locally: `make install` (use `--prefix` with `./configure` to change destination).
 - Clean artifacts: `make clean` (or `make distclean` after reconfiguring).
 - Stress configure options: `./nano-regress` (iterates common `./configure` flag combinations; noisy but useful before releasing Milli).
@@ -23,7 +23,7 @@
 
 ## Testing Guidelines
 - There is no dedicated automated test suite; rely on `./nano-regress` plus manual Milli editor exercises for features you touch.
-- After building, sanity check with `./src/nano --version` and a short Milli edit session (open, search/replace, save).
+- After building, sanity check with `./src/milli --version` and a short Milli edit session (open, search/replace, save).
 - When changing syntax files, confirm loading via `--rcfile` pointing to the modified sample file.
 
 ## Commit & Pull Request Guidelines
