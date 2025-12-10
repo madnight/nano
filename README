@@ -70,7 +70,7 @@ How to compile and install Milli
 
     From git (requires autotools):
 
-        git clone https://github.com/manimohans/nano.git milli
+        git clone https://github.com/manimohans/milli.git
         cd milli
         ./autogen.sh
         ./configure --enable-debug
