@@ -37,6 +37,7 @@ core
 /missing
 /mkinstalldirs
 /stamp-h1
+/sync-upstream.sh
 
 # Gettext m4 files:
 /m4/codeset.m4
