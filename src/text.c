@@ -53,19 +53,193 @@ void do_mark(void)
 }
 #endif
 
-/* Placeholder: prompt-driven AI replacement of selected text. */
-void do_ai_replace_selection(void)
+/* Convert a raw string into a linked list of lines, for pasting. */
+static linestruct *buffer_from_text(const char *text)
 {
-	if (openfile->mark == NULL)
-		statusline(AHEM, _("Set a selection first, then use M-1 for AI replace"));
-	else
-		statusline(REMARK, _("AI replace (Alt+1) not wired yet"));
+	linestruct *head = make_new_node(NULL);
+	linestruct *line = head;
+	const char *start = text;
+
+	while (TRUE) {
+		const char *nl = strchr(start, '\n');
+		size_t len = (nl == NULL) ? strlen(start) : (size_t)(nl - start);
+
+		line->data = nmalloc(len + 1);
+		memcpy(line->data, start, len);
+		line->data[len] = '\0';
+
+		if (nl == NULL)
+			break;
+
+		line->next = make_new_node(line);
+		line = line->next;
+		start = nl + 1;
+	}
+
+	return head;
 }
 
-/* Placeholder: prompt-driven AI insertion at the cursor. */
+/* Collect selected text into a single buffer.  Caller ensures mark exists. */
+static char *collect_marked_text(void)
+{
+	linestruct *top, *bot, *iter;
+	size_t top_x, bot_x, total = 0, offset = 0;
+	char *collected;
+
+	get_region(&top, &top_x, &bot, &bot_x);
+
+	for (iter = top; iter != bot->next; iter = iter->next) {
+		size_t start = (iter == top) ? top_x : 0;
+		size_t end = (iter == bot) ? bot_x : strlen(iter->data);
+		if (end > start)
+			total += end - start;
+		if (iter != bot)
+			total++; /* newline */
+	}
+
+	collected = nmalloc(total + 1);
+
+	for (iter = top; iter != bot->next; iter = iter->next) {
+		size_t start = (iter == top) ? top_x : 0;
+		size_t end = (iter == bot) ? bot_x : strlen(iter->data);
+		size_t chunk = (end > start) ? (end - start) : 0;
+
+		if (chunk > 0) {
+			memcpy(collected + offset, iter->data + start, chunk);
+			offset += chunk;
+		}
+		if (iter != bot)
+			collected[offset++] = '\n';
+	}
+
+	collected[offset] = '\0';
+	return collected;
+}
+
+static bool insert_generated_text(const char *text)
+{
+	linestruct *buf;
+
+	if (text == NULL || *text == '\0') {
+		statusline(AHEM, _("AI returned no content"));
+		return FALSE;
+	}
+
+	buf = buffer_from_text(text);
+
+#ifndef NANO_TINY
+	add_undo(PASTE, NULL);
+#endif
+	copy_from_buffer(buf);
+#ifndef NANO_TINY
+	update_undo(PASTE);
+#endif
+	free_lines(buf);
+	openfile->mark = NULL;
+	set_modified();
+	refresh_needed = TRUE;
+	return TRUE;
+}
+
+/* Prompt user, call AI provider, and replace the current selection. */
+void do_ai_replace_selection(void)
+{
+	char *user_prompt = NULL;
+	char *selection = NULL;
+	char *generated = NULL;
+	char *errmsg = NULL;
+	int response;
+
+	if (openfile->mark == NULL) {
+		statusline(AHEM, _("Set a selection first, then use M-1 for AI replace"));
+		return;
+	}
+
+	response = do_prompt(MEXECUTE, "", NULL, edit_refresh, _("AI prompt:"));
+	if (response < 0)
+		return;
+
+	user_prompt = copy_of(answer);
+	if (!ensure_ai_config_loaded(&errmsg)) {
+		statusline(AHEM, "%s", errmsg ? errmsg : _("AI config not loaded"));
+		free(errmsg);
+		free(user_prompt);
+		return;
+	}
+
+	selection = collect_marked_text();
+
+	if (!ai_generate_text(user_prompt, selection, &generated, &errmsg)) {
+		statusline(AHEM, "%s", errmsg ? errmsg : _("AI request failed"));
+		free(errmsg);
+		free(user_prompt);
+		free(selection);
+		return;
+	}
+
+	/* Remove the selection without altering the user's cutbuffer. */
+	{
+		linestruct *saved_cut = cutbuffer;
+		linestruct *saved_bottom = cutbottom;
+		bool saved_keep = keep_cutbuffer;
+
+		cutbuffer = NULL;
+		cutbottom = NULL;
+		keep_cutbuffer = FALSE;
+#ifndef NANO_TINY
+		add_undo(CUT, NULL);
+		do_snip(TRUE, FALSE, FALSE);
+		update_undo(CUT);
+#else
+		do_snip(TRUE, FALSE, FALSE);
+#endif
+		free_lines(cutbuffer);
+		cutbuffer = saved_cut;
+		cutbottom = saved_bottom;
+		keep_cutbuffer = saved_keep;
+	}
+
+	if (insert_generated_text(generated))
+		statusline(REMARK, _("AI replaced the selection"));
+
+	free(user_prompt);
+	free(selection);
+	free(generated);
+}
+
+/* Prompt user, call AI provider, and insert at the cursor. */
 void do_ai_insert_at_cursor(void)
 {
-	statusline(REMARK, _("AI insert (Alt+2) not wired yet"));
+	char *user_prompt = NULL;
+	char *generated = NULL;
+	char *errmsg = NULL;
+	int response;
+
+	response = do_prompt(MEXECUTE, "", NULL, edit_refresh, _("AI prompt:"));
+	if (response < 0)
+		return;
+
+	user_prompt = copy_of(answer);
+
+	if (!ensure_ai_config_loaded(&errmsg)) {
+		statusline(AHEM, "%s", errmsg ? errmsg : _("AI config not loaded"));
+		free(errmsg);
+		free(user_prompt);
+		return;
+	}
+
+	if (!ai_generate_text(user_prompt, NULL, &generated, &errmsg)) {
+		statusline(AHEM, "%s", errmsg ? errmsg : _("AI request failed"));
+		free(errmsg);
+		free(user_prompt);
+		return;
+	}
+
+	if (insert_generated_text(generated))
+		statusline(REMARK, _("AI inserted text at cursor"));
+
+	free(user_prompt);
+	free(generated);
 }
 
 /* Insert a tab.  Or, if --tabstospaces is in effect, insert the number

@@ -25,6 +25,7 @@ bin_PROGRAMS = 	milli
 milli_SOURCES = \
 		definitions.h \
 		prototypes.h \
+		ai.c \
 		browser.c \
 		chars.c \
 		color.c \

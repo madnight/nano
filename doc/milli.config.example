@@ -1,0 +1,22 @@
+# Milli AI configuration
+#
+# Copy this file to ~/.milli.config and adjust values as needed.
+# Both LM Studio and OpenAI Cloud use the OpenAI-compatible REST shape.
+
+[ai]
+# Base URL including port, ending with /v1 for OpenAI-compatible APIs.
+base_url = http://127.0.0.1:1234/v1
+
+# Endpoint paths. Leave as defaults unless your proxy differs.
+responses_endpoint = /v1/responses
+models_endpoint = /v1/models
+
+# Model identifier to request from the server.
+model = google/gemma-3-1b
+
+# API key is required for OpenAI Cloud; LM Studio accepts any token.
+api_key = lm-studio
+
+# Optional: request parameters and timeouts.
+temperature = 0.2
+timeout_ms = 60000

@@ -20,6 +20,17 @@
 
 #include "definitions.h"
 
+typedef struct ai_config {
+	char *base_url;
+	char *responses_endpoint;
+	char *models_endpoint;
+	char *model;
+	char *api_key;
+	double temperature;
+	long timeout_ms;
+	bool loaded;
+} ai_config;
+
 /* All external variables.  See global.c for their descriptions. */
 
 #ifndef NANO_TINY
@@ -300,6 +311,9 @@ void do_execute(void);
 void do_ai_replace_selection(void);
 void do_ai_insert_at_cursor(void);
 #endif
+bool ensure_ai_config_loaded(char **errmsg);
+bool ai_generate_text(const char *user_prompt, const char *selection,
+				char **output_text, char **errmsg);
 char *get_full_path(const char *origpath);
 char *safe_tempfile(FILE **stream);
 #ifdef ENABLE_OPERATINGDIR
