@@ -968,7 +968,7 @@ void handle_hupterm(int signal)
 /* Handler for SIGSEGV (segfault) and SIGABRT (abort). */
 void handle_crash(int signal)
 {
-	die(_("Sorry! Nano crashed!  Code: %d.  Please report a bug.\n"), signal);
+	die(_("Sorry! Milli crashed!  Code: %d.  Please report a bug.\n"), signal);
 }
 #endif
 
