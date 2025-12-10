@@ -119,6 +119,10 @@ static char *collect_marked_text(void)
 static bool insert_generated_text(const char *text)
 {
 	linestruct *buf;
+	linestruct *saved_cut = cutbuffer;
+	linestruct *saved_bottom = cutbottom;
+	linestruct *temp_copy = NULL;
+	linestruct *walker;
 
 	if (text == NULL || *text == '\0') {
 		statusline(AHEM, _("AI returned no content"));
@@ -128,6 +132,13 @@ static bool insert_generated_text(const char *text)
 	buf = buffer_from_text(text);
 
 #ifndef NANO_TINY
+	/* Prepare undo by staging the generated text as a temporary cutbuffer. */
+	temp_copy = copy_buffer(buf);
+	cutbuffer = temp_copy;
+	cutbottom = temp_copy;
+	for (walker = temp_copy; walker->next != NULL; walker = walker->next)
+		cutbottom = walker->next;
+
 	add_undo(PASTE, NULL);
 #endif
 	copy_from_buffer(buf);
@@ -135,6 +146,9 @@ static bool insert_generated_text(const char *text)
 	update_undo(PASTE);
 #endif
 	free_lines(buf);
+	free_lines(temp_copy);
+	cutbuffer = saved_cut;
+	cutbottom = saved_bottom;
 	openfile->mark = NULL;
 	set_modified();
 	refresh_needed = TRUE;
