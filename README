@@ -110,3 +110,20 @@ Bug Reports
     to the nano-devel list (no need to subscribe, but mention it if
     you want to be CC'ed on an answer).  Please include "Milli" in the
     subject so maintainers can triage downstream reports.
+
+AI configuration
+
+    Milli can talk to OpenAI-compatible endpoints (OpenAI Cloud or LM
+    Studio) for AI-assisted actions (Alt+1/Alt+2).  Copy
+    doc/milli.config.example to ~/.milli.config and adjust:
+
+        base_url = http://127.0.0.1:1234/v1
+        responses_endpoint = /v1/responses
+        models_endpoint = /v1/models
+        model = google/gemma-3-1b
+        api_key = lm-studio   # use a real key for OpenAI Cloud
+        temperature = 0.2
+        timeout_ms = 60000
+
+    Milli reads this file from your HOME directory at startup.  LM
+    Studio accepts any bearer token; OpenAI Cloud requires a valid key.
