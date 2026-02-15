@@ -201,8 +201,8 @@ a command straight into a buffer, and then edit it.
 * Search and Replace::
 * Using the Mouse::
 * Anchors::
+* Macros::
 * Exit status::
-* Limitations::
 @end menu
 
 @node Screen Layout
@@ -375,6 +375,23 @@ are saved when the file is closed, and restored when the file is reopened.
 Anchors are visualized in the left margin if line numbers are active,
 and are always visualized (on the right-hand side) in the mini bar.
 
+@node Macros
+@section Macros
+
+To record a series of keystrokes that you need to perform many times,
+start the recording with @kbd{M-:}, carefully type the keystrokes, and
+then stop the recording by typing @kbd{M-:} again.  The recorded result
+is called a keyboard macro.  You can replay this macro with @kbd{M-;},
+as many times as needed.
+
+When you type @kbd{M-:} (recordmacro) by mistake, then type @kbd{M-:}
+again right away, to cancel the recording.  An existing macro is then
+not overwritten.
+
+Note: the recording and playback of keyboard macros works correctly only
+on a terminal emulator, not on a Linux console (VT), because the latter
+does not by default distinguish modified from unmodified cursor keys.
+
 @node Exit status
 @section Exit status
 
@@ -382,13 +399,6 @@ The exit status is @code{0} when @command{nano} finished normally,
 @code{1} when an invalid option or option argument was given,
 and @code{2} when the last open buffer was discarded
 (with @kbd{^O^Q} or @kbd{^X^Q}).
-
-@node Limitations
-@section Limitations
-
-The recording and playback of keyboard macros works correctly only on a
-terminal emulator, not on a Linux console (VT), because the latter does
-not by default distinguish modified from unmodified arrow keys.
 
 
 @node The Help Viewer
