@@ -379,8 +379,8 @@ and are always visualized (on the right-hand side) in the mini bar.
 @section Macros
 
 To record a series of keystrokes that you need to perform many times,
-start the recording with @kbd{M-:}, carefully type the keystrokes, and
-then stop the recording by typing @kbd{M-:} again.  The recorded result
+start the recording with @kbd{M-:}, carefully type the series of keystrokes,
+and then stop the recording by using @kbd{M-:} again.  The recorded result
 is called a keyboard macro.  You can replay this macro with @kbd{M-;},
 as many times as needed.
 
