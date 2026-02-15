@@ -1674,6 +1674,15 @@ void process_a_keystroke(void)
 	} else if (meta_key)
 		give_a_hint = FALSE;
 
+#ifndef NANO_TINY
+	if (function == do_toggle) {
+		toggle_this(shortcut->toggle);
+		if (shortcut->toggle == CUT_FROM_CURSOR)
+			keep_cutbuffer = FALSE;
+		return;
+	}
+#endif
+
 	/* When not cutting or copying text, drop the cutbuffer the next time. */
 	if (function != cut_text && function != copy_text) {
 #ifndef NANO_TINY
@@ -1693,13 +1702,6 @@ void process_a_keystroke(void)
 	}
 #endif
 #ifndef NANO_TINY
-	if (function == do_toggle) {
-		toggle_this(shortcut->toggle);
-		if (shortcut->toggle == CUT_FROM_CURSOR)
-			keep_cutbuffer = FALSE;
-		return;
-	}
-
 	linestruct *was_current = openfile->current;
 	size_t was_x = openfile->current_x;
 
