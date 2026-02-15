@@ -1674,6 +1674,12 @@ void process_a_keystroke(void)
 	} else if (meta_key)
 		give_a_hint = FALSE;
 
+#ifdef ENABLE_NANORC
+	if (function == (functionptrtype)implant) {
+		implant(shortcut->expansion);
+		return;
+	}
+#endif
 #ifndef NANO_TINY
 	if (function == do_toggle) {
 		toggle_this(shortcut->toggle);
@@ -1694,12 +1700,6 @@ void process_a_keystroke(void)
 #ifdef ENABLE_WORDCOMPLETION
 	if (function != complete_a_word)
 		pletion_line = NULL;
-#endif
-#ifdef ENABLE_NANORC
-	if (function == (functionptrtype)implant) {
-		implant(shortcut->expansion);
-		return;
-	}
 #endif
 #ifndef NANO_TINY
 	linestruct *was_current = openfile->current;
