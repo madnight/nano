@@ -79,10 +79,6 @@ static int *macro_buffer = NULL;
 		/* A buffer where the recorded key codes are stored. */
 static size_t macro_length = 0;
 		/* The current length of the macro. */
-static int *previous_macro = NULL;
-		/* The macro that existed when recording is started. */
-static size_t previous_length = 0;
-		/* The length of that previous macro. */
 static size_t milestone = 0;
 		/* Where the last burst of recorded keystrokes started. */
 
@@ -97,6 +93,9 @@ void add_to_macrobuffer(int code)
 /* Start or stop the recording of keystrokes. */
 void record_macro(void)
 {
+	static int *previous_macro = NULL;
+	static size_t previous_length;
+
 	recording = !recording;
 
 	if (recording) {
