@@ -1677,7 +1677,7 @@ void process_a_keystroke(void)
 	/* When not cutting or copying text, drop the cutbuffer the next time. */
 	if (function != cut_text && function != copy_text) {
 #ifndef NANO_TINY
-		if (function != zap_text)
+		if (function != zap_text && function != record_macro && function != run_macro)
 #endif
 			keep_cutbuffer = FALSE;
 	}
