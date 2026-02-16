@@ -1,7 +1,7 @@
 /**************************************************************************
  *   chars.c  --  This file is part of GNU nano.                          *
  *                                                                        *
- *   Copyright (C) 2001-2011, 2013-2025 Free Software Foundation, Inc.    *
+ *   Copyright (C) 2001-2011, 2013-2026 Free Software Foundation, Inc.    *
  *   Copyright (C) 2016-2021 Benno Schulenberg                            *
  *                                                                        *
  *   GNU nano is free software: you can redistribute it and/or modify     *
@@ -545,7 +545,7 @@ char *mbrevstrcasestr(const char *haystack, const char *needle,
 
 #if !defined(NANO_TINY) || defined(ENABLE_JUSTIFY)
 /* This function is equivalent to strchr() for multibyte strings. */
-char *mbstrchr(const char *string, const char *chr)
+const char *mbstrchr(const char *string, const char *chr)
 {
 #ifdef ENABLE_UTF8
 	if (using_utf8) {

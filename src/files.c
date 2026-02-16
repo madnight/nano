@@ -1,7 +1,7 @@
 /**************************************************************************
  *   files.c  --  This file is part of GNU nano.                          *
  *                                                                        *
- *   Copyright (C) 1999-2011, 2013-2025 Free Software Foundation, Inc.    *
+ *   Copyright (C) 1999-2011, 2013-2026 Free Software Foundation, Inc.    *
  *   Copyright (C) 2015-2022, 2025 Benno Schulenberg                      *
  *                                                                        *
  *   GNU nano is free software: you can redistribute it and/or modify     *
@@ -73,6 +73,7 @@ void make_new_buffer(void)
 	openfile->current = openfile->filetop;
 	openfile->current_x = 0;
 	openfile->placewewant = 0;
+	openfile->brink = 0;
 	openfile->cursor_row = 0;
 
 	openfile->edittop = openfile->filetop;

@@ -1,7 +1,7 @@
 /**************************************************************************
  *   utils.c  --  This file is part of GNU nano.                          *
  *                                                                        *
- *   Copyright (C) 1999-2011, 2013-2025 Free Software Foundation, Inc.    *
+ *   Copyright (C) 1999-2011, 2013-2026 Free Software Foundation, Inc.    *
  *   Copyright (C) 2016, 2017, 2019, 2020 Benno Schulenberg               *
  *                                                                        *
  *   GNU nano is free software: you can redistribute it and/or modify     *
@@ -343,6 +343,20 @@ char *free_and_assign(char *dest, char *src)
  * displayed in the edit window when the cursor is at the given column. */
 size_t get_page_start(size_t column)
 {
+	if (united_sidescroll) {
+		if (column < CUSHION)
+			return 0;
+		else if (column < openfile->brink + CUSHION) {
+			if (ISSET(JUMPY_SCROLLING))
+				return (column > editwincols / 2) ? column - editwincols / 2 : 0;
+			else
+				return column - CUSHION;
+		} else if (column > openfile->brink + editwincols - CUSHION - 1)
+			return column - editwincols + (ISSET(JUMPY_SCROLLING) ? editwincols / 2 : CUSHION) + 1;
+		else
+			return openfile->brink;
+	}
+
 	if (column == 0 || column + 2 < editwincols || ISSET(SOFTWRAP))
 		return 0;
 	else if (editwincols > 8)

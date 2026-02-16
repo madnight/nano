@@ -1,7 +1,7 @@
 /**************************************************************************
  *   cut.c  --  This file is part of GNU nano.                            *
  *                                                                        *
- *   Copyright (C) 1999-2011, 2013-2025 Free Software Foundation, Inc.    *
+ *   Copyright (C) 1999-2011, 2013-2026 Free Software Foundation, Inc.    *
  *   Copyright (C) 2014 Mark Majeres                                      *
  *   Copyright (C) 2016, 2018-2020 Benno Schulenberg                      *
  *                                                                        *
@@ -52,6 +52,9 @@ void expunge(undo_type action)
 #ifndef NANO_TINY
 		/* When softwrapping, a changed number of chunks requires a refresh. */
 		if (ISSET(SOFTWRAP) && extra_chunks_in(openfile->current) != old_amount)
+			refresh_needed = TRUE;
+		/* When panning, and we have come near edge of the viewport... */
+		else if (united_sidescroll && openfile->placewewant < openfile->brink + CUSHION)
 			refresh_needed = TRUE;
 
 		/* Adjust the mark if it is after the cursor on the current line. */

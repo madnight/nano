@@ -1,4 +1,4 @@
-.\" Copyright (C) 1999-2011, 2013-2025 Free Software Foundation, Inc.
+.\" Copyright (C) 1999-2011, 2013-2026 Free Software Foundation, Inc.
 .\"
 .\" This document is dual-licensed.  You may distribute and/or modify it
 .\" under the terms of either of the following licenses:
@@ -27,7 +27,13 @@ nano \- Nano's ANOther text editor, inspired by Pico
 .sp
 .BR nano " [" \fIoptions "] [[" + [ crCR ]{ / | ? } \fIstring "] " \fIfile ]...
 
-.SH NOTICE
+.SH NOTICES
+Since version 9.0, all lines are scrolled horizontally together
+(when the cursor approaches the edge), by just the amount needed,
+instead of scrolling only the current line by a large step.
+If you prefer the old behavior, you can use \fB--solo\fR on the
+command line or \fBset solosidescroll\fR in your nanorc.
+.sp
 Since version 8.0, to be newcomer friendly, \fB^F\fR starts a forward search,
 \fB^B\fR starts a backward search, \fBM\-F\fR searches the next occurrence
 forward, and \fBM\-B\fR searches the next occurrence backward.  If you want
@@ -412,6 +418,14 @@ Furthermore, \fB^A\fR sets the mark,
 \fB^P\fR shows the position, \fB^T\fR goes to a line,
 \fB^W\fR writes out a file, and \fB^E\fR executes a command.
 Note that this overrides option \fB\-p\fR (\fB\-\-preserve\fR).
+.TP
+.BR \-1 ", " \-\-solosidescroll
+When the cursor approaches the right edge of the edit window, scroll only the
+current line sideways by a large amount, instead of scrolling all visible lines
+sideways by just the amount needed to keep the cursor in view.
+This latter whole-window smooth sideways scrolling is the new default behavior.
+The single-line jerky sideways scrolling enabled by this option was the old
+behavior \(em the only behavior that \fBnano\fR knew.
 
 .SH TOGGLES
 Several of the above options can be switched on and off also while
@@ -438,13 +452,26 @@ for more information on the possible contents of those files.
 See \fI/usr/share/nano/\fR and \fI/usr/share/nano/extra/\fR
 for available syntax-coloring definitions.
 
+.SH EXIT STATUS
+.TP
+.B 0
+The editor finished normally.
+.TP
+.B 1
+An invalid option or option argument was given.
+.TP
+.B 2
+The last open buffer was discarded (with \fB^O^Q\fR or \fB^X^Q\fR).
+
 .SH NOTES
 Suspension is enabled by default, reachable via \fB^T^Z\fR.
 (If you want a plain \fB^Z\fR to suspend nano, add
 \fBbind ^Z suspend main\fR to your nanorc.)
 .sp
 At a Yes-No prompt, \fB^Y\fR can be used for "Yes", \fB^N\fR for "No",
-and \fB^A\fR for "All".  These unlisted bindings work in any locale.
+and \fB^A\fR for "All".
+(And when exiting, \fB^Q\fR can be used for "Quit with error".)
+These unlisted bindings work in any locale.
 .sp
 When you want to copy marked text from \fBnano\fR to the system's clipboard,
 see one of the examples in the \fBnanorc\fR(5) man page.

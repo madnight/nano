@@ -40,7 +40,7 @@ This manual documents the GNU @command{nano} text editor.
 The contents of this manual are part of the GNU @command{nano} distribution.
 
 @sp 5
-Copyright @copyright{} 1999-2009, 2014-2025 Free Software Foundation, Inc.
+Copyright @copyright{} 1999-2009, 2014-2026 Free Software Foundation, Inc.
 @sp 1
 This document is dual-licensed.  You may distribute and/or modify it
 under the terms of either of the following licenses:
@@ -129,6 +129,13 @@ those keystrokes to do what they did before version 8.0, see the
 rebindings in the sample nanorc file.
 
 @blankline
+Since version 9.0, all lines are scrolled horizontally together
+(when the cursor approaches the edge), by just the amount needed,
+instead of scrolling only the current line by a large step.
+If you prefer the old behavior, you can use @code{--solo} on the
+command line or @code{set solosidescroll} in your nanorc.
+
+@blankline
 Please report bugs via @url{https://savannah.gnu.org/bugs/?group=nano}.
 
 @blankline
@@ -194,7 +201,8 @@ a command straight into a buffer, and then edit it.
 * Search and Replace::
 * Using the Mouse::
 * Anchors::
-* Limitations::
+* Macros::
+* Exit status::
 @end menu
 
 @node Screen Layout
@@ -367,12 +375,30 @@ are saved when the file is closed, and restored when the file is reopened.
 Anchors are visualized in the left margin if line numbers are active,
 and are always visualized (on the right-hand side) in the mini bar.
 
-@node Limitations
-@section Limitations
+@node Macros
+@section Macros
 
-The recording and playback of keyboard macros works correctly only on a
-terminal emulator, not on a Linux console (VT), because the latter does
-not by default distinguish modified from unmodified arrow keys.
+To record a series of keystrokes that you need to perform many times,
+start the recording with @kbd{M-:}, carefully type the keystrokes, and
+then stop the recording by typing @kbd{M-:} again.  The recorded result
+is called a keyboard macro.  You can replay this macro with @kbd{M-;},
+as many times as needed.
+
+When you type @kbd{M-:} (recordmacro) by mistake, then type @kbd{M-:}
+again right away, to cancel the recording.  An existing macro is then
+not overwritten.
+
+Note: the recording and playback of keyboard macros works correctly only
+on a terminal emulator, not on a Linux console (VT), because the latter
+does not by default distinguish modified from unmodified cursor keys.
+
+@node Exit status
+@section Exit status
+
+The exit status is @code{0} when @command{nano} finished normally,
+@code{1} when an invalid option or option argument was given,
+and @code{2} when the last open buffer was discarded
+(with @kbd{^O^Q} or @kbd{^X^Q}).
 
 
 @node The Help Viewer
@@ -789,6 +815,15 @@ Furthermore, @kbd{^A} sets the mark,
 @kbd{^W} writes out a file, and @kbd{^E} executes a command.
 Note that this overrides option @option{-p} (@option{--preserve}).
 
+@item -1
+@itemx --solosidescroll
+When the cursor approaches the right edge of the edit window, scroll only the
+current line sideways by a large amount, instead of scrolling all visible lines
+sideways by just the amount needed to keep the cursor in view.
+This latter whole-window smooth sideways scrolling is the new default behavior.
+The single-line jerky sideways scrolling enabled by this option was the old
+behavior --- the only behavior that @command{nano} knew.
+
 @end table
 
 @sp 1
@@ -1187,6 +1222,14 @@ Display lines that exceed the screen's width over multiple screen lines.
 (You can make this soft-wrapping occur at whitespace instead of rudely at
 the screen's edge, by using also @code{set atblanks}.)
 
+@item set solosidescroll
+When the cursor approaches the right edge of the edit window, scroll only the
+current line sideways by a large amount, instead of scrolling all visible lines
+sideways by just the amount needed to keep the cursor in view.
+This latter whole-window smooth sideways scrolling is the new default behavior.
+The single-line jerky sideways scrolling enabled by this option was the old
+behavior --- the only behavior that @command{nano} knew.
+
 @item set speller "@var{program} [@var{argument} @dots{}]"
 Use the given program to do spell checking and correcting.
 @xref{@option{--speller}} for details.
@@ -1494,8 +1537,8 @@ with Shift.)
 Rebinding @code{^M} (Enter) or @code{^I} (Tab) is probably not a good idea.
 Rebinding @code{^[} (Esc) is not possible, because its keycode
 is the starter byte of Meta keystrokes and escape sequences.
-Rebinding any of the dedicated cursor-moving keys (the arrows, Home, End,
-PageUp and PageDown) is not possible.
+Rebinding any of the dedicated cursor-moving keys (Home, End,
+PageUp, PageDown, and the arrows) is not possible.
 On some terminals it's not possible to rebind @code{^H} (unless @code{--raw}
 is used) because its keycode is identical to that of the Backspace key.
 
@@ -1818,9 +1861,8 @@ When writing a file, 'prepends' (writes at the beginning) instead of overwriting
 When writing a file, creates a backup of the current file.
 
 @item discardbuffer
-When about to write a file, discard the current buffer without saving.
-(This function is bound by default only when option @option{--saveonexit}
-is in effect.)
+Discards the current buffer without saving (when in the Write Out menu).
+When it was the last buffer, then @command{nano} exits with error status 2.
 
 @item browser
 Starts the file browser (in the Read File and Write Out menus),

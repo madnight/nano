@@ -1,7 +1,7 @@
 /**************************************************************************
  *   global.c  --  This file is part of GNU nano.                         *
  *                                                                        *
- *   Copyright (C) 1999-2011, 2013-2025 Free Software Foundation, Inc.    *
+ *   Copyright (C) 1999-2011, 2013-2026 Free Software Foundation, Inc.    *
  *   Copyright (C) 2014-2025 Benno Schulenberg                            *
  *                                                                        *
  *   GNU nano is free software: you can redistribute it and/or modify     *
@@ -73,6 +73,8 @@ char *title = NULL;
 bool refresh_needed = FALSE;
 		/* Did a command mangle enough of the buffer that we should
 		 * repaint the screen? */
+bool united_sidescroll = TRUE;
+		/* Whether to scroll all lines sideways.  That is: whether to pan. */
 bool focusing = TRUE;
 		/* Whether an update of the edit window should center the cursor. */
 

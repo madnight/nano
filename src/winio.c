@@ -1,7 +1,7 @@
 /**************************************************************************
  *   winio.c  --  This file is part of GNU nano.                          *
  *                                                                        *
- *   Copyright (C) 1999-2011, 2013-2025 Free Software Foundation, Inc.    *
+ *   Copyright (C) 1999-2011, 2013-2026 Free Software Foundation, Inc.    *
  *   Copyright (C) 2014-2025 Benno Schulenberg                            *
  *                                                                        *
  *   GNU nano is free software: you can redistribute it and/or modify     *
@@ -82,23 +82,27 @@ static size_t macro_length = 0;
 static size_t milestone = 0;
 		/* Where the last burst of recorded keystrokes started. */
 
-/* Add the given code to the macro buffer. */
-void add_to_macrobuffer(int code)
-{
-	macro_length++;
-	macro_buffer = nrealloc(macro_buffer, macro_length * sizeof(int));
-	macro_buffer[macro_length - 1] = code;
-}
-
 /* Start or stop the recording of keystrokes. */
 void record_macro(void)
 {
+	static int *previous_macro = NULL;
+	static size_t previous_length;
+
 	recording = !recording;
 
 	if (recording) {
+		previous_macro = macro_buffer;
+		previous_length = macro_length;
+		macro_buffer = NULL;
 		macro_length = 0;
 		statusline(REMARK, _("Recording a macro..."));
+	} else if (milestone == 0) {
+		free(macro_buffer);
+		macro_buffer = previous_macro;
+		macro_length = previous_length;
+		statusline(REMARK, _("Cancelled"));
 	} else {
+		free(previous_macro);
 		/* Snip the keystroke that invoked this function. */
 		macro_length = milestone;
 		statusline(REMARK, _("Stopped recording"));
@@ -106,6 +110,14 @@ void record_macro(void)
 
 	if (ISSET(STATEFLAGS))
 		titlebar(NULL);
+}
+
+/* Add the given code to the macro buffer. */
+void add_to_macrobuffer(int code)
+{
+	macro_length++;
+	macro_buffer = nrealloc(macro_buffer, macro_length * sizeof(int));
+	macro_buffer[macro_length - 1] = code;
 }
 
 /* Copy the stored sequence of codes into the regular key buffer,
@@ -349,7 +361,7 @@ void implant(const char *string)
 int get_code_from_plantation(void)
 {
 	if (*plants_pointer == '{') {
-		char *closing = strchr(plants_pointer + 1, '}');
+		const char *closing = strchr(plants_pointer + 1, '}');
 
 		if (!closing)
 			return MISSING_BRACE;
@@ -380,7 +392,7 @@ int get_code_from_plantation(void)
 
 		return PLANTED_A_COMMAND;
 	} else {
-		char *opening = strchr(plants_pointer, '{');
+		const char *opening = strchr(plants_pointer, '{');
 		unsigned char firstbyte = *plants_pointer;
 		int length;
 
@@ -2838,7 +2850,10 @@ int update_line(linestruct *line, size_t index)
 #endif
 
 	row = line->lineno - openfile->edittop->lineno;
-	from_col = get_page_start(wideness(line->data, index));
+	if (united_sidescroll)
+		from_col = openfile->brink;
+	else
+		from_col = get_page_start(wideness(line->data, index));
 
 	/* Expand the piece to be drawn to its representable form, and draw it. */
 	converted = display_string(line->data, from_col, editwincols, TRUE, FALSE);
@@ -2931,9 +2946,13 @@ bool line_needs_update(const size_t old_column, const size_t new_column)
 #ifndef NANO_TINY
 	if (openfile->mark)
 		return TRUE;
-	else
 #endif
-		return (get_page_start(old_column) != get_page_start(new_column));
+	if (get_page_start(old_column) == get_page_start(new_column))
+		return FALSE;
+	if (united_sidescroll)
+		refresh_needed = TRUE;
+
+	return !refresh_needed;
 }
 
 /* Try to move up nrows softwrapped chunks from the given line and the
@@ -3342,6 +3361,9 @@ void edit_redraw(linestruct *old_current, update_type manner)
 		adjust_viewport(ISSET(JUMPY_SCROLLING) ? CENTERING : manner);
 		refresh_needed = TRUE;
 		return;
+	} else if (united_sidescroll) {
+		refresh_needed = TRUE;
+		return;
 	}
 
 #ifndef NANO_TINY
@@ -3380,6 +3402,10 @@ void edit_refresh(void)
 	/* If the current line is out of view, get it back on screen. */
 	if (current_is_offscreen())
 		adjust_viewport((focusing || ISSET(JUMPY_SCROLLING)) ? CENTERING : FLOWING);
+
+	/* When panning, ensure the cursor will be within the viewport. */
+	if (united_sidescroll)
+		openfile->brink = get_page_start(xplustabs());
 
 #ifdef ENABLE_COLOR
 	/* When needed and useful, initialize the colors for the current syntax. */
@@ -3656,7 +3682,7 @@ void do_credits(void)
 		NULL,                /* "Thank you for using Milli!" */
 		"",
 		"",
-		"(C) 2025",
+		"(C) 2026",
 		"Free Software Foundation, Inc.",
 		"",
 		"",
