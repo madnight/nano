@@ -52,8 +52,8 @@ Origin
     Nowadays, nano wants to be a generally useful editor with sensible
     defaults (linewise scrolling, no automatic line breaking).
 
-    The nano editor is an official GNU package.  For more information on
-    GNU and the Free Software Foundation, please see https://www.gnu.org/.
+    The nano editor is an official GNU package.  For more information
+    on GNU and the Free Software Foundation, see https://www.gnu.org/.
 
 License
 
