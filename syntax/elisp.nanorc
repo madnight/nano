@@ -1,6 +1,7 @@
 ## Syntax highlighting for Emacs Lisp.
 
 ## Original author:  Mark Oteiza
+## License:  GPL version 3 or newer
 
 syntax elisp "\.el$"
 magic "Lisp/Scheme program"

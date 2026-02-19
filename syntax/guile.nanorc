@@ -1,6 +1,7 @@
 ## Syntax highlighting for Guile Scheme.
 
 ## Original author:  Mark Oteiza
+## License:  GPL version 3 or newer
 
 syntax guile "\.scm$"
 header "^#!.*guile"
