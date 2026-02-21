@@ -1,26 +1,30 @@
 ## Syntax highlighting for Guile Scheme.
 
-## Original author:  Mark Oteiza
+## Original authors:  Mark Oteiza and Benno Schulenberg
 ## License:  GPL version 3 or newer
 
-syntax guile "\.scm$"
+syntax guile "\.(scm|sld|sls|ss)$"
 header "^#!.*guile"
 comment ";"
 
-# Basic scheme functions
-color green "\<(do|if|lambda|let(rec)?|map|unless|when)\>"
+# Basic syntax
+color lightgreen "\<((and|begin|case|cond|do|else|if|lambda|let(rec)?|or|quote|unless|when)\>|let\*|set!)"
+# Basic procedures
+color lightcyan "\<((append|apply|c[ad]{1,4}r|cons|display|for-each|list|map|newline)\>|reverse(\>|!)|set-c[ad]r!)"
+color lightcyan "\<(boolean|char(-ci)?[<>]?=?|complex|eqv?|even|integer|list|nan|negative|null|number|odd|pair|positive|rational|real|string|symbol|vector|zero)\?"
+color lightcyan "\<(abs|a?(cos|sin|tan)|ceiling|exp|floor|max|min|modulo|not|random|round|quotient|sqrt|square|truncate)\>"
 # Defining things
-color brightcyan "\<define(-macro|-module|-public|-syntax)?\>"
+color brightgreen "\<define(-macro|-module|-public|-syntax)?\>"
 # Quoted symbols
-color brightyellow "'\<(\w|-)+\>"
-# Chars
+color lightyellow "'(\w|[!​$%&*+/:​​<=>?@^_~])(\w|[!​$%&*+/:​​<=>?@^_~.0-9-])*"
+# Characters
 color brightmagenta "#\\(.|\w+)"
 # Booleans
-color brightred "(#t|#f)\>"
+color brightred "#(t|true|f|false)\>"
 # Keywords
-color blue "#?:(\w|[?-])+"
+color lagoon "#?:(\w|[?-])+"
 # Strings
-color yellow start="^[[:blank:]]+"" end="[^\]""
+color yellow start="^[[:blank:]]*"([^"\]|\\.)*$" end="(^|[^\]|[^\]\\\\)""
 color yellow ""([^"\]|\\.)*""
 # Comments
-color cyan "(^|[[:blank:]]);.*"
+color italic,#aaa "(^|[[:blank:]]);.*"
