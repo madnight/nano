@@ -2350,15 +2350,15 @@ msgstr ""
 #. * these strings MUST be a single-byte letter; others may be multi-byte.
 #: src/prompt.c:670
 msgid "Yy"
-msgstr "Yy"
+msgstr "YyНнДд"
 
 #: src/prompt.c:671
 msgid "Nn"
-msgstr "Nn"
+msgstr "NnТт"
 
 #: src/prompt.c:672
 msgid "Aa"
-msgstr "Aa"
+msgstr "AaФфВв"
 
 #: src/prompt.c:698
 msgid "Yes"
