@@ -299,7 +299,7 @@ char *do_lockfile(const char *filename, bool ask_the_user)
 		/* Allow extra space for username (14), program name (8), PID (8),
 		 * and terminating \0 (1), minus the %s (2) for the file name. */
 		promptstr = nmalloc(strlen(question) + 29 + strlen(postedname));
-		sprintf(promptstr, question, postedname, lockuser, lockprog, pidstring);
+		snprintf(promptstr, strlen(question) + 29 + strlen(postedname), question, postedname, lockuser, lockprog, pidstring);
 		free(postedname);
 		free(pidstring);
 
