@@ -68,8 +68,8 @@ char *concatenate(const char *path, const char *name)
 	size_t pathlen = strlen(path);
 	char *joined = nmalloc(pathlen + strlen(name) + 1);
 
-	strcpy(joined, path);
-	strcpy(joined + pathlen, name);
+	memcpy(joined, path, pathlen);
+	memcpy(joined + pathlen, name, strlen(name) + 1);
 
 	return joined;
 }
@@ -308,7 +308,7 @@ char *mallocstrcpy(char *dest, const char *src)
 	size_t count = strlen(src) + 1;
 
 	dest = nrealloc(dest, count);
-	strncpy(dest, src, count);
+	memcpy(dest, src, count);
 
 	return dest;
 }
